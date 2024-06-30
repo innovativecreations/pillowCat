@@ -10,10 +10,11 @@ body {
 
 #game-area {
     position: relative;
-    width: 600px;
-    height: 400px;
+    width: 800px;
+    height: 500px;
     border: 2px solid #000;
     background-color: #fff;
+    overflow: hidden;
 }
 
 #cat1, #cat2 {
@@ -27,7 +28,7 @@ body {
 }
 
 #cat2 {
-    right: 50px;
+    left: 650px;
 }
 
 #throw-pillow {
@@ -38,8 +39,8 @@ body {
 
 .pillow {
     position: absolute;
-    width: 50px;
-    height: 30px;
+    width: 20px;
+    height: 12px;
     background-color: #f5f5dc;
     border: 2px solid #ccc;
     border-radius: 10px;
