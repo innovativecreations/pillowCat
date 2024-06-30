@@ -9,23 +9,44 @@ function throwPillow() {
 }
 
 function animatePillow(pillow) {
-    let bottom = 50;
-    const interval = setInterval(() => {
-        bottom += 5;
-        pillow.style.bottom = bottom + 'px';
-        if (bottom >= 350) {
-            clearInterval(interval);
+    const startX = 75;
+    const startY = 80;
+    const endX = 525;
+    const duration = 2000;
+    const gravity = 0.001;
+    const velocityX = (endX - startX) / duration;
+    const velocityY = -0.4; 
+
+    const startTime = Date.now();
+
+    function updatePillow() {
+        const currentTime = Date.now();
+        const timeElapsed = currentTime - startTime;
+
+        if (timeElapsed < duration) {
+            const progress = timeElapsed / duration;
+            const x = startX + velocityX * timeElapsed;
+            const y = startY + velocityY * timeElapsed + 0.5 * gravity * timeElapsed * timeElapsed;
+
+            pillow.style.left = x + 'px';
+            pillow.style.bottom = y + 'px';
+
+            requestAnimationFrame(updatePillow);
+        } else {
+            pillow.style.left = endX + 'px';
+            pillow.style.bottom = '80px';
             checkCollision(pillow);
         }
-    }, 30);
+    }
+
+    updatePillow();
 }
 
 function checkCollision(pillow) {
     const pillowRect = pillow.getBoundingClientRect();
-    const cat1Rect = document.getElementById('cat1').getBoundingClientRect();
     const cat2Rect = document.getElementById('cat2').getBoundingClientRect();
 
-    if (isColliding(pillowRect, cat1Rect) || isColliding(pillowRect, cat2Rect)) {
+    if (isColliding(pillowRect, cat2Rect)) {
         pillow.style.backgroundColor = 'red';
     } else {
         pillow.style.backgroundColor = 'blue';

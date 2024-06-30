@@ -43,6 +43,6 @@ body {
     background-color: #f5f5dc;
     border: 2px solid #ccc;
     border-radius: 10px;
-    bottom: 50px;
-    left: calc(50% - 25px);
+    bottom: 80px;
+    left: 75px;
 }
