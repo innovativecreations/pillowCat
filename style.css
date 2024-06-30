@@ -1,0 +1,48 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+#game-area {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #000;
+    background-color: #fff;
+}
+
+#cat1, #cat2 {
+    position: absolute;
+    bottom: 0;
+    width: 100px;
+}
+
+#cat1 {
+    left: 50px;
+}
+
+#cat2 {
+    right: 50px;
+}
+
+#throw-pillow {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.pillow {
+    position: absolute;
+    width: 50px;
+    height: 30px;
+    background-color: #f5f5dc;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    bottom: 50px;
+    left: calc(50% - 25px);
+}
