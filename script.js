@@ -12,10 +12,12 @@ function animatePillow(pillow) {
     const startX = 75;
     const startY = 80;
     const endX = 525;
+    const endY = 80; 
     const duration = 2000;
-    const gravity = 0.001;
+    const gravity = 0.0005;
+    
     const velocityX = (endX - startX) / duration;
-    const velocityY = -0.4; 
+    const initialVelocityY = ((endY - startY) + (0.5 * gravity * duration * duration)) / duration;
 
     const startTime = Date.now();
 
@@ -24,9 +26,8 @@ function animatePillow(pillow) {
         const timeElapsed = currentTime - startTime;
 
         if (timeElapsed < duration) {
-            const progress = timeElapsed / duration;
             const x = startX + velocityX * timeElapsed;
-            const y = startY + velocityY * timeElapsed + 0.5 * gravity * timeElapsed * timeElapsed;
+            const y = startY + initialVelocityY * timeElapsed - 0.5 * gravity * timeElapsed * timeElapsed;
 
             pillow.style.left = x + 'px';
             pillow.style.bottom = y + 'px';
@@ -34,7 +35,7 @@ function animatePillow(pillow) {
             requestAnimationFrame(updatePillow);
         } else {
             pillow.style.left = endX + 'px';
-            pillow.style.bottom = '80px';
+            pillow.style.bottom = endY + 'px';
             checkCollision(pillow);
         }
     }
