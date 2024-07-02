@@ -1,4 +1,5 @@
 let isFrozen = false;
+let score = 0;
 
 document.getElementById('throw-pillow').addEventListener('click', throwPillow);
 
@@ -26,7 +27,10 @@ function animatePillow(pillow) {
     const startTime = Date.now();
 
     function updatePillow() {
-        if (isFrozen) return;
+        if (isFrozen) {
+            requestAnimationFrame(updatePillow);
+            return;
+        }
 
         const currentTime = Date.now();
         const timeElapsed = currentTime - startTime;
@@ -41,6 +45,7 @@ function animatePillow(pillow) {
 
         if (x >= 800 - pillow.offsetWidth || y <= 0 || y >= 500 - pillow.offsetHeight) {
             pillow.remove();
+            restartGame();
             return;
         }
 
@@ -58,7 +63,10 @@ function moveCat2() {
     let direction = 1;
 
     function updateCat2() {
-        if (isFrozen) return;
+        if (isFrozen) {
+            requestAnimationFrame(updateCat2);
+            return;
+        }
 
         const currentLeft = parseInt(cat2.style.left, 10) || startPos;
         const newLeft = currentLeft + direction * speed;
@@ -91,6 +99,7 @@ function checkCollision(pillow) {
         playMeowSound();
         flipCatVertically();
         pillow.remove();
+        increaseScore();
         freezeMotion();
     }
 }
@@ -100,7 +109,7 @@ function isColliding(rect1, rect2) {
         rect1.left < rect2.left + rect2.width &&
         rect1.left + rect1.width > rect2.left &&
         rect1.top < rect2.top + rect2.height &&
-        rect1.top + rect1.height > rect2.top
+        rect1.top + rect2.height > rect2.top
     );
 }
 
@@ -123,10 +132,22 @@ function freezeMotion() {
 
     setTimeout(() => {
         isFrozen = false;
-        requestAnimationFrame(moveCat2);
-        const pillows = document.getElementsByClassName('pillow');
-        for (let i = 0; i < pillows.length; i++) {
-            requestAnimationFrame(() => animatePillow(pillows[i]));
-        }
     }, 2000);
+}
+
+function increaseScore() {
+    score++;
+    document.getElementById('score').textContent = 'Score: ' + score;
+}
+
+function restartGame() {
+    console.log('Game Over! Your score was: ' + score);
+    alert('You missed the cat! The game will restart.');
+    score = 0;
+    document.getElementById('score').textContent = 'Score: ' + score;
+    const pillows = document.getElementsByClassName('pillow');
+    while (pillows.length > 0) {
+        pillows[0].parentNode.removeChild(pillows[0]);
+    }
+    moveCat2();
 }
