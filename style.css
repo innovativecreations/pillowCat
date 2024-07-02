@@ -39,8 +39,8 @@ body {
 
 .pillow {
     position: absolute;
-    width: 20px;
-    height: 12px;
+    width: 30px;
+    height: 20px;
     background-color: #f5f5dc;
     border: 2px solid #ccc;
     border-radius: 10px;
