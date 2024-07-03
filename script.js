@@ -1,7 +1,15 @@
 let isFrozen = false;
 let score = 0;
+let catDirection = -1;
+let initialCatSpeed = 2;
+let catSpeed = initialCatSpeed;
+const freezeTime = 2000; 
+const speedIncreaseInterval = 3000;
+const speedIncreaseAmount = 0.09;
 
-document.getElementById('throw-pillow').addEventListener('click', throwPillow);
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('cat1').addEventListener('click', throwPillow);
+    document.getElementById('restart-game').addEventListener('click', restartGame);
 
     function throwPillow() {
         if (isFrozen) return;
@@ -45,11 +53,11 @@ document.getElementById('throw-pillow').addEventListener('click', throwPillow);
                 return;
             }
 
-        if (x >= 800 - pillow.offsetWidth || y <= 0 || y >= 500 - pillow.offsetHeight) {
-            pillow.remove();
-            restartGame();
-            return;
-        }
+            if (x >= 800 - pillow.offsetWidth || y <= 0 || y >= 500 - pillow.offsetHeight) {
+                pillow.remove();
+                endGame();
+                return;
+            }
 
             requestAnimationFrame(updatePillow);
         }
@@ -57,12 +65,11 @@ document.getElementById('throw-pillow').addEventListener('click', throwPillow);
         updatePillow();
     }
 
-function moveCat2() {
-    const cat2 = document.getElementById('cat2');
-    const startPos = 400;
-    const endPos = 750;
-    const speed = 2;
-    let direction = 1;
+    function moveCat2() {
+        const cat2 = document.getElementById('cat2');
+        cat2.style.left = '750px';
+        const startPos = 750;
+        const endPos = 400;
 
         function updateCat2() {
             if (isFrozen) {
@@ -87,7 +94,6 @@ function moveCat2() {
 
     function increaseCatSpeed() {
         catSpeed += speedIncreaseAmount;
-        console.log('Cat speed increased to:', catSpeed);
     }
 
     setInterval(increaseCatSpeed, speedIncreaseInterval);
@@ -98,24 +104,24 @@ function moveCat2() {
         const pillowRect = pillow.getBoundingClientRect();
         const cat2Rect = document.getElementById('cat2').getBoundingClientRect();
 
-    if (isColliding(pillowRect, cat2Rect)) {
-        console.log('Pillow hit the cat!');
-        playMeowSound();
-        flipCatVertically();
-        pillow.remove();
-        increaseScore();
-        freezeMotion();
-    }
-}
+        const cat2MiddleStart = cat2Rect.top + cat2Rect.height * 0.15;
+        const cat2MiddleEnd = cat2Rect.bottom - cat2Rect.height * 0.15;
 
-function isColliding(rect1, rect2) {
-    return (
-        rect1.left < rect2.left + rect2.width &&
-        rect1.left + rect1.width > rect2.left &&
-        rect1.top < rect2.top + rect2.height &&
-        rect1.top + rect2.height > rect2.top
-    );
-}
+        if (
+            pillowRect.left < cat2Rect.left + cat2Rect.width &&
+            pillowRect.left + pillowRect.width > cat2Rect.left &&
+            pillowRect.top < cat2MiddleEnd &&
+            pillowRect.bottom > cat2MiddleStart
+        ) {
+            playMeowSound();
+            flipCatVertically();
+            pillow.remove();
+            increaseScore();
+            freezeMotion();
+            return true;
+        }
+        return false;
+    }
 
     function playMeowSound() {
         const meowSound = document.getElementById('meow-sound');
@@ -139,19 +145,29 @@ function isColliding(rect1, rect2) {
         }, freezeTime);
     }
 
-function increaseScore() {
-    score++;
-    document.getElementById('score').textContent = 'Score: ' + score;
-}
-
-function restartGame() {
-    console.log('Game Over! Your score was: ' + score);
-    alert('You missed the cat! The game will restart.');
-    score = 0;
-    document.getElementById('score').textContent = 'Score: ' + score;
-    const pillows = document.getElementsByClassName('pillow');
-    while (pillows.length > 0) {
-        pillows[0].parentNode.removeChild(pillows[0]);
+    function increaseScore() {
+        score++;
+        document.getElementById('score').innerText = score;
     }
-    moveCat2();
-}
+
+    function endGame() {
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('game-over-card').style.display = 'block';
+        isFrozen = true;
+    }
+
+    function restartGame() {
+        score = 0;
+        catSpeed = initialCatSpeed;
+        document.getElementById('score').innerText = score;
+        document.getElementById('game-over-card').style.display = 'none';
+        isFrozen = false;
+
+        const pillows = document.getElementsByClassName('pillow');
+        while (pillows.length > 0) {
+            pillows[0].parentNode.removeChild(pillows[0]);
+        }
+
+        moveCat2();
+    }
+});
