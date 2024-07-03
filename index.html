@@ -11,8 +11,15 @@
         <img id="cat1" src="src/img/cat1.png" alt="Cat 1">
         <img id="cat2" src="src/img/walking.png" alt="Cat 2">
     </div>
-    <button id="throw-pillow">Throw Pillow</button>
     <audio id="meow-sound" src="src/meow.wav"></audio>
+    <div id="score-board">
+        <h2>Score: <span id="score">0</span></h2>
+    </div>
+    <div id="game-over-card" class="hidden">
+        <h2>Game Over!</h2>
+        <p>Your score: <span id="final-score">0</span></p>
+        <button id="restart-game">Restart Game</button>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
