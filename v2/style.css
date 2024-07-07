@@ -38,6 +38,12 @@ body {
     transform: scaleX(-1);
 }
 
+.falling-comet {
+    position: absolute;
+    width: 15px;
+    height: auto;
+}
+
 #cat1 {
     left: 50px;
 }
