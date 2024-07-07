@@ -3,7 +3,7 @@ let score = 0;
 let catDirection = -1;
 let initialCatSpeed = 2;
 let catSpeed = initialCatSpeed;
-const freezeTime = 2000; 
+const freezeTime = 80; 
 const speedIncreaseInterval = 3000;
 const speedIncreaseAmount = 0.09;
 
