@@ -1,6 +1,3 @@
-document.addEventListener('keydown', handleKeyDown);
-document.addEventListener('keyup', handleKeyUp);
-
 const step = 5;
 const keysPressed = {
     'a': false,
@@ -145,14 +142,21 @@ function startTimer() {
 document.getElementById('start-game').addEventListener('click', () => {
     const player1Name = document.getElementById('player1').value || 'Player 1';
     const player2Name = document.getElementById('player2').value || 'Player 2';
-    
+
+    console.log('Player 1:', player1Name);
+    console.log('Player 2:', player2Name);
+
     document.getElementById('player1-name').textContent = player1Name;
     document.getElementById('player2-name').textContent = player2Name;
-    
+
     document.getElementById('player-form').style.display = 'none';
-    
+
     startStopwatch();
     startTimer();
-});
 
-setInterval(createFallingComet, 1000);
+    // Set up the event listeners and intervals after starting the game
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+
+    setInterval(createFallingComet, 1000);
+});

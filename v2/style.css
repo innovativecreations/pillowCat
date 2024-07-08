@@ -4,9 +4,9 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #faf2e0;
+    background-color: #0d0d0d;
     margin: 0;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 #player-info {
@@ -14,6 +14,7 @@ body {
     justify-content: space-between;
     width: 850px;
     margin-bottom: 10px;
+    color: #ffffff;
 }
 
 #player1-info, #player2-info {
@@ -30,9 +31,10 @@ body {
 
 #stopwatch, #timer {
     font-size: 24px;
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px 10px;
-    border-radius: 5px;
+    background-color: rgba(61, 39, 39, 0.82);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
 }
 
 #game-container {
@@ -94,30 +96,54 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    padding: 30px 40px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ffab76;
 }
 
-#player-form label, #player-form input {
-    display: block;
-    margin: 10px 0;
+#player-form h2 {
+    margin-bottom: 20px;
+    color: #ffab76;
+    font-size: 24px;
+}
+
+#player-form label {
+    margin: 10px 0 5px;
+    font-size: 16px;
+    color: #ffab76;
+}
+
+#player-form input {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #ffab76;
+    border-radius: 5px;
+    background-color: #1f1f1f;
+    color: #ffffff;
 }
 
 #player-form button {
-    margin-top: 10px;
+    margin-top: 20px;
     padding: 10px 20px;
     font-size: 16px;
     color: #ffffff;
-    background-color: #00796b;
+    background: linear-gradient(135deg, #ff6a00, #ee0979);
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #player-form button:hover {
-    background-color: #004d40;
+    background-color: #ffa347;
+    transform: scale(1.05);
 }
