@@ -26,12 +26,25 @@ body {
     background-size: cover;
 }
 
-.cat {
+.cat-container {
     position: absolute;
     bottom: 10px;
+}
+
+.cat {
     width: auto;
     height: 100px;
     cursor: pointer;
+}
+
+.hit-text {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    color: red;
+    display: none;
 }
 
 .flip-horizontal {
@@ -44,10 +57,10 @@ body {
     height: auto;
 }
 
-#cat1 {
+#cat1-container {
     left: 50px;
 }
 
-#cat2 {
+#cat2-container {
     left: 650px;
 }
