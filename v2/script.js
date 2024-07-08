@@ -142,6 +142,17 @@ function startTimer() {
     }, 10);
 }
 
+document.getElementById('start-game').addEventListener('click', () => {
+    const player1Name = document.getElementById('player1').value || 'Player 1';
+    const player2Name = document.getElementById('player2').value || 'Player 2';
+    
+    document.getElementById('player1-name').textContent = player1Name;
+    document.getElementById('player2-name').textContent = player2Name;
+    
+    document.getElementById('player-form').style.display = 'none';
+    
+    startStopwatch();
+    startTimer();
+});
+
 setInterval(createFallingComet, 1000);
-startStopwatch();
-startTimer();
