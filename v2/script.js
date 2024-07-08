@@ -1,4 +1,4 @@
-const step = 5;
+const step = 15;
 const keysPressed = {
     'a': false,
     'd': false,
@@ -13,7 +13,8 @@ const frozenCats = {
 const collisionAudio = new Audio('src/audio/collision.mp3');
 let stopwatchInterval, timerInterval;
 let stopwatchStartTime, timerStartTime;
-
+let cometFallSpeed = 20; 
+let cometCreationInterval = 1000; 
 function handleKeyDown(event) {
     if (keysPressed.hasOwnProperty(event.key) && !keysPressed[event.key]) {
         keysPressed[event.key] = true;
@@ -85,7 +86,7 @@ function createFallingComet() {
                 document.getElementById('cat1').classList.add('blackout');
                 collisionAudio.play();
                 clearInterval(stopwatchInterval);
-                clearInterval(fallInterval);
+                checkGameOver();
             }
             if (!frozenCats['cat2'] && detectCollision(comet, document.getElementById('cat2-container'))) {
                 frozenCats['cat2'] = true;
@@ -93,10 +94,10 @@ function createFallingComet() {
                 document.getElementById('cat2').classList.add('blackout');
                 collisionAudio.play();
                 clearInterval(timerInterval);
-                clearInterval(fallInterval);
+                checkGameOver();
             }
         }
-    }, 20);
+    }, cometFallSpeed);
 }
 
 function detectCollision(comet, cat) {
@@ -139,12 +140,29 @@ function startTimer() {
     }, 10);
 }
 
+function checkGameOver() {
+    if (frozenCats['cat1'] && frozenCats['cat2']) {
+        displayScoreCard();
+    }
+}
+
+function displayScoreCard() {
+    const player1Time = document.getElementById('stopwatch').textContent;
+    const player2Time = document.getElementById('timer').textContent;
+
+    document.getElementById('player1-score').textContent = `Player 1 Time: ${player1Time}`;
+    document.getElementById('player2-score').textContent = `Player 2 Time: ${player2Time}`;
+
+    document.getElementById('score-card').style.display = 'flex';
+}
+
+function increaseCometSpeed() {
+    cometFallSpeed = Math.max(2, cometFallSpeed - 1);
+}
+
 document.getElementById('start-game').addEventListener('click', () => {
     const player1Name = document.getElementById('player1').value || 'Player 1';
     const player2Name = document.getElementById('player2').value || 'Player 2';
-
-    console.log('Player 1:', player1Name);
-    console.log('Player 2:', player2Name);
 
     document.getElementById('player1-name').textContent = player1Name;
     document.getElementById('player2-name').textContent = player2Name;
@@ -154,9 +172,13 @@ document.getElementById('start-game').addEventListener('click', () => {
     startStopwatch();
     startTimer();
 
-    // Set up the event listeners and intervals after starting the game
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
 
-    setInterval(createFallingComet, 1000);
+    setInterval(createFallingComet, cometCreationInterval);
+    setInterval(increaseCometSpeed, 5000);
+});
+
+document.getElementById('restart-game').addEventListener('click', () => {
+    location.reload();
 });

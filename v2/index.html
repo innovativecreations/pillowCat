@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moving Cats</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="player-info">
@@ -33,6 +34,12 @@
             <div class="cat-container" id="cat2-container">
                 <img id="cat2" class="cat" src="src/img/cat2.png" alt="Cat 2">
             </div>
+        </div>
+        <div id="score-card" style="display: none;">
+            <h2>Game Over</h2>
+            <p id="player1-score"></p>
+            <p id="player2-score"></p>
+            <button id="restart-game">Restart Game</button>
         </div>
     </div>
     <script src="script.js"></script>
