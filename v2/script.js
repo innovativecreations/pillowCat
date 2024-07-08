@@ -13,6 +13,10 @@ const frozenCats = {
     'cat2': false
 };
 
+const collisionAudio = new Audio('src/collision.mp3');
+let stopwatchInterval;
+let seconds = 0;
+
 function handleKeyDown(event) {
     if (keysPressed.hasOwnProperty(event.key) && !keysPressed[event.key]) {
         keysPressed[event.key] = true;
@@ -27,24 +31,24 @@ function handleKeyUp(event) {
 }
 
 function moveCats(key) {
-    const cat1 = document.getElementById('cat1');
-    const cat2 = document.getElementById('cat2');
+    const cat1 = document.getElementById('cat1-container');
+    const cat2 = document.getElementById('cat2-container');
 
     if (key === 'a' && !frozenCats['cat1']) {
         moveCat(cat1, -step);
-        cat1.classList.add('flip-horizontal');
+        cat1.querySelector('.cat').classList.add('flip-horizontal');
     }
     if (key === 'd' && !frozenCats['cat1']) {
         moveCat(cat1, step);
-        cat1.classList.remove('flip-horizontal');
+        cat1.querySelector('.cat').classList.remove('flip-horizontal');
     }
     if (key === 'ArrowLeft' && !frozenCats['cat2']) {
         moveCat(cat2, -step);
-        cat2.classList.remove('flip-horizontal');
+        cat2.querySelector('.cat').classList.remove('flip-horizontal');
     }
     if (key === 'ArrowRight' && !frozenCats['cat2']) {
         moveCat(cat2, step);
-        cat2.classList.add('flip-horizontal');
+        cat2.querySelector('.cat').classList.add('flip-horizontal');
     }
 }
 
@@ -78,16 +82,18 @@ function createFallingComet() {
         } else {
             comet.style.top = currentTop + 2 + 'px';
 
-            if (detectCollision(comet, document.getElementById('cat1'))) {
+            if (detectCollision(comet, document.getElementById('cat1-container'))) {
                 frozenCats['cat1'] = true;
                 comet.remove();
-                document.getElementById('hit-text-cat1').style.display = 'block';
+                document.getElementById('cat1').classList.add('blackout');
+                collisionAudio.play();
                 clearInterval(fallInterval);
             }
-            if (detectCollision(comet, document.getElementById('cat2'))) {
+            if (detectCollision(comet, document.getElementById('cat2-container'))) {
                 frozenCats['cat2'] = true;
                 comet.remove();
-                document.getElementById('hit-text-cat2').style.display = 'block';
+                document.getElementById('cat2').classList.add('blackout');
+                collisionAudio.play();
                 clearInterval(fallInterval);
             }
         }
@@ -97,13 +103,29 @@ function createFallingComet() {
 function detectCollision(comet, cat) {
     const cometRect = comet.getBoundingClientRect();
     const catRect = cat.getBoundingClientRect();
+    const bodyRect = {
+        top: catRect.top + catRect.height * 0.2,
+        bottom: catRect.bottom - catRect.height * 0.2,
+        left: catRect.left + catRect.width * 0.2,
+        right: catRect.right - catRect.width * 0.2,
+    };
 
     return !(
-        cometRect.top > catRect.bottom ||
-        cometRect.bottom < catRect.top ||
-        cometRect.left > catRect.right ||
-        cometRect.right < catRect.left
+        cometRect.top > bodyRect.bottom ||
+        cometRect.bottom < bodyRect.top ||
+        cometRect.left > bodyRect.right ||
+        cometRect.right < bodyRect.left
     );
 }
 
+function startStopwatch() {
+    stopwatchInterval = setInterval(() => {
+        seconds++;
+        const minutes = Math.floor(seconds / 60);
+        const displaySeconds = seconds % 60;
+        document.getElementById('stopwatch').textContent = `${minutes.toString().padStart(2, '0')}:${displaySeconds.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
 setInterval(createFallingComet, 1000);
+startStopwatch();
