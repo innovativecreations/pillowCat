@@ -8,7 +8,15 @@
 </head>
 <body>
     <div id="game-container">
-        <div id="stopwatch">00:00</div>
+        <div id="player-form">
+            <label for="player1">Player 1:</label>
+            <input type="text" id="player1" name="player1" required>
+            <label for="player2">Player 2:</label>
+            <input type="text" id="player2" name="player2" required>
+            <button id="start-game">Start Game</button>
+        </div>
+        <div id="stopwatch">00:00.000</div>
+        <div id="timer">00:00.000</div>
         <div id="game-area">
             <div class="cat-container" id="cat1-container">
                 <img id="cat1" class="cat" src="src/img/cat1.png" alt="Cat 1">

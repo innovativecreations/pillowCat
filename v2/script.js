@@ -13,9 +13,9 @@ const frozenCats = {
     'cat2': false
 };
 
-const collisionAudio = new Audio('src/collision.mp3');
-let stopwatchInterval;
-let seconds = 0;
+const collisionAudio = new Audio('src/audio/collision.mp3');
+let stopwatchInterval, timerInterval;
+let stopwatchStartTime, timerStartTime;
 
 function handleKeyDown(event) {
     if (keysPressed.hasOwnProperty(event.key) && !keysPressed[event.key]) {
@@ -82,18 +82,20 @@ function createFallingComet() {
         } else {
             comet.style.top = currentTop + 2 + 'px';
 
-            if (detectCollision(comet, document.getElementById('cat1-container'))) {
+            if (!frozenCats['cat1'] && detectCollision(comet, document.getElementById('cat1-container'))) {
                 frozenCats['cat1'] = true;
                 comet.remove();
                 document.getElementById('cat1').classList.add('blackout');
                 collisionAudio.play();
+                clearInterval(stopwatchInterval);
                 clearInterval(fallInterval);
             }
-            if (detectCollision(comet, document.getElementById('cat2-container'))) {
+            if (!frozenCats['cat2'] && detectCollision(comet, document.getElementById('cat2-container'))) {
                 frozenCats['cat2'] = true;
                 comet.remove();
                 document.getElementById('cat2').classList.add('blackout');
                 collisionAudio.play();
+                clearInterval(timerInterval);
                 clearInterval(fallInterval);
             }
         }
@@ -119,13 +121,27 @@ function detectCollision(comet, cat) {
 }
 
 function startStopwatch() {
+    stopwatchStartTime = Date.now();
     stopwatchInterval = setInterval(() => {
-        seconds++;
-        const minutes = Math.floor(seconds / 60);
-        const displaySeconds = seconds % 60;
-        document.getElementById('stopwatch').textContent = `${minutes.toString().padStart(2, '0')}:${displaySeconds.toString().padStart(2, '0')}`;
-    }, 1000);
+        const elapsedTime = Date.now() - stopwatchStartTime;
+        const minutes = Math.floor(elapsedTime / 60000);
+        const seconds = Math.floor((elapsedTime % 60000) / 1000);
+        const milliseconds = elapsedTime % 1000;
+        document.getElementById('stopwatch').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
+    }, 10);
+}
+
+function startTimer() {
+    timerStartTime = Date.now();
+    timerInterval = setInterval(() => {
+        const elapsedTime = Date.now() - timerStartTime;
+        const minutes = Math.floor(elapsedTime / 60000);
+        const seconds = Math.floor((elapsedTime % 60000) / 1000);
+        const milliseconds = elapsedTime % 1000;
+        document.getElementById('timer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
+    }, 10);
 }
 
 setInterval(createFallingComet, 1000);
 startStopwatch();
+startTimer();
